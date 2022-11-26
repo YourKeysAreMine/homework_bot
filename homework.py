@@ -89,7 +89,7 @@ def parse_status(homework: dict):
             status = homework.get('status')
             if status in HOMEWORK_VERDICTS:
                 verdict = HOMEWORK_VERDICTS[status]
-                return (f'Изменился статус проверки работы'
+                return ('Изменился статус проверки работы '
                         f'"{homework_name}". {verdict}')
             else:
                 raise KeyError('АPI домашки вернул неизвестный статус!')
