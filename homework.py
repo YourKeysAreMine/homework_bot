@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PRACTICUM_TOKEN:str = os.getenv('PRACTICUM_TOKEN')
-TELEGRAM_TOKEN:str = os.getenv('TELEGRAM_TOKEN')
-TELEGRAM_CHAT_ID:str = os.getenv('TELEGRAM_CHAT_ID')
+PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 RETRY_PERIOD:int = 600
 ENDPOINT:str = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
@@ -76,7 +76,7 @@ def check_response(response:dict):
     raise TypeError('В ответе API домашки не содержится словарь')
 
 
-def parse_status(homework:list):
+def parse_status(homework:dict):
     """Извлекаем из ответа от Яндекс.Домашка(тм) информацию о статусе"""
     if 'status' in homework:
         if 'homework_name' in homework:
