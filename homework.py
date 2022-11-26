@@ -35,7 +35,7 @@ HOMEWORK_VERDICTS = {
 
 
 def check_tokens():
-    """Проверяем наличие токенов, ID чата"""
+    """Проверяем наличие токенов, ID чата."""
     tokens = {
         'Токен Яндекс Практикума': PRACTICUM_TOKEN,
         'Токен Телеграмма': TELEGRAM_TOKEN,
@@ -49,7 +49,7 @@ def check_tokens():
 
 
 def send_message(bot: telegram.bot.Bot, message: str):
-    """Направляем сообщение в телеграм чат"""
+    """Направляем сообщение в телеграм чат."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
     except Exception:
@@ -59,7 +59,7 @@ def send_message(bot: telegram.bot.Bot, message: str):
 
 
 def get_api_answer(timestamp: int):
-    """Получаем ответ от Яндекс.Домашка(тм)"""
+    """Получаем ответ от Яндекс.Домашка(тм)."""
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
@@ -72,17 +72,17 @@ def get_api_answer(timestamp: int):
 
 
 def check_response(response: dict):
-    """Проверяем ответ от Яндекс.Домашка(тм)"""
+    """Проверяем ответ от Яндекс.Домашка(тм)."""
     if type(response) is dict:
         if type(response.get('homeworks')) is list:
             return response.get('homeworks')
-        raise TypeError('В ответе API домашки под ключом' 
+        raise TypeError('В ответе API домашки под ключом'
                         '`homeworks` данные приходят не в виде списка')
     raise TypeError('В ответе API домашки не содержится словарь')
 
 
 def parse_status(homework: dict):
-    """Извлекаем из ответа от Яндекс.Домашка(тм) информацию о статусе"""
+    """Извлекаем из ответа от Яндекс.Домашка(тм) информацию о статусе."""
     if 'status' in homework:
         if 'homework_name' in homework:
             homework_name = homework.get('homework_name')
