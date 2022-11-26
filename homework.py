@@ -1,7 +1,11 @@
-import requests, os, telegram, time, logging, sys
+import requests
+import os
+import telegram
+import time
+import logging
+import sys
 
 from http import HTTPStatus
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,9 +14,9 @@ PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
-RETRY_PERIOD:int = 600
-ENDPOINT:str = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
-HEADERS:dict = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
+RETRY_PERIOD: int = 600
+ENDPOINT: str = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
+HEADERS: dict = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -44,7 +48,7 @@ def check_tokens():
     return True
 
 
-def send_message(bot:telegram.bot.Bot, message:str):
+def send_message(bot: telegram.bot.Bot, message: str):
     """Направляем сообщение в телеграм чат"""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
@@ -54,7 +58,7 @@ def send_message(bot:telegram.bot.Bot, message:str):
         logging.debug('Сообщение в телеграм отправлено успешно!')
 
 
-def get_api_answer(timestamp:int):
+def get_api_answer(timestamp: int):
     """Получаем ответ от Яндекс.Домашка(тм)"""
     params = {'from_date': timestamp}
     try:
@@ -64,19 +68,20 @@ def get_api_answer(timestamp:int):
         logging.info('Ответ на запрос к API: 200 OK')
         return response.json()
     except requests.exceptions.RequestException:
-        logging.error(f'Ошибка при запросе к Яндекс.Домашка(тм)')
+        logging.error('Ошибка при запросе к Яндекс.Домашка(тм)')
 
 
-def check_response(response:dict):
+def check_response(response: dict):
     """Проверяем ответ от Яндекс.Домашка(тм)"""
     if type(response) is dict:
         if type(response.get('homeworks')) is list:
             return response.get('homeworks')
-        raise TypeError('В ответе API домашки под ключом `homeworks` данные приходят не в виде списка')
+        raise TypeError('В ответе API домашки под ключом' 
+                        '`homeworks` данные приходят не в виде списка')
     raise TypeError('В ответе API домашки не содержится словарь')
 
 
-def parse_status(homework:dict):
+def parse_status(homework: dict):
     """Извлекаем из ответа от Яндекс.Домашка(тм) информацию о статусе"""
     if 'status' in homework:
         if 'homework_name' in homework:
@@ -84,7 +89,8 @@ def parse_status(homework:dict):
             status = homework.get('status')
             if status in HOMEWORK_VERDICTS:
                 verdict = HOMEWORK_VERDICTS[status]
-                return (f'Изменился статус проверки работы "{homework_name}". {verdict}')
+                return (f'Изменился статус проверки работы'
+                        f'"{homework_name}". {verdict}')
             else:
                 raise KeyError('АPI домашки вернул неизвестный статус!')
         raise KeyError('В ответе API домашки нет ключа <status>')
