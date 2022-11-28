@@ -47,7 +47,6 @@ def send_message(bot: telegram.bot.Bot, message: str):
     except Exception:
         logger.error('Что-то не так, сообщение в телеграм не отправлено!')
     else:
-        #Изменить на logging когда всё поправишь!
         logger.debug('Сообщение в телеграм отправлено успешно!')
 
 
@@ -71,7 +70,7 @@ def check_response(response: dict):
         raise TypeError('В ответе API домашки не содержится словарь')
     if 'homeworks' not in response or 'current_date' not in response:
         raise KeyError('В ответе API домашки нет ключей <homeworks>'
-                        'или <current_date>')
+                       'или <current_date>')
     homeworks = response.get('homeworks')
     if not isinstance(homeworks, list):
         raise TypeError('В ответе API домашки под ключом'
