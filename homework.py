@@ -1,7 +1,7 @@
-import os
-import time
 import logging
+import os
 import sys
+import time
 from http import HTTPStatus
 
 import requests
